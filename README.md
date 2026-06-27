@@ -1,7 +1,7 @@
 # Pipeline Defect Detection Model
 
-Inspired from Aditi Varia, Shrujan Sriram, Abhinav Gondesi's work on PipeDown - a tool that can be used to constantly monitor the inside of pipes for industrial pipe inspections. 
-Created during UC Berkeley AI Hackathon 2026. 
+**Inspired from Aditi Varia, Shrujan Sriram, Abhinav Gondesi's work on PipeDown - a tool that can be used to constantly monitor the inside of pipes for industrial pipe inspections. 
+**Created during UC Berkeley AI Hackathon 2026. 
 DevPost: https://devpost.com/software/tbd-nprbw3 
 GitHub: https://github.com/aditivv/berkai 
 
