@@ -3,10 +3,10 @@ train: images/train
 val: images/val
 test: images/test   
 nc: 6
-names:
-0: Deformation
-1: Obstacle
-2: Rupture 
-3: Disconnect
-4: Misalignment
-5: Deposition
+names:    
+  - Deformation
+  - Obstacle
+  - Rupture
+  - Disconnect
+  - Misalignment
+  - Deposition
