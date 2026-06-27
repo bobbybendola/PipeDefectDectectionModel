@@ -8,11 +8,11 @@ start=time.time()
 
 model.train(
       data="data/data.yaml",   #coming from Kaggle Dataset, labelled and marked for each training image
-      epochs=1,
+      epochs=50,
       imgsz=640,
       batch=16,
       device='mps', #specifically for Mac Mini M4 chip, force trainign to GPU 
-      name="pipeline_defect_v1"
+      name="pipeline_defect_50ep"
   )
 
 elapsed = time.time() - start
