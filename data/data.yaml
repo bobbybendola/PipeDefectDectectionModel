@@ -1,9 +1,9 @@
 path: /Users/stevenk/Desktop/Processing/PipeDefectDectectionModel/data
 train: images/train
 val: images/val
-test: images/test   
+test: images/test
 nc: 6
-names:    
+names:
   - Deformation
   - Obstacle
   - Rupture

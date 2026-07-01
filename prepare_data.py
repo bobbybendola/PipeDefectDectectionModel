@@ -19,14 +19,14 @@ print(f"Found {len(pairs)} valid image-label pairs")
 # Randomly sample 1000 , don't want to use all of the images for training 
 random.seed(42)
 random.shuffle(pairs)
-subset = pairs[:1000]
+subset = pairs[:3000]
 
 # Split 800 train / 100 val / 100 test
 # 80-10-10 split for training, testing and validation 
 splits = {
-    'train': subset[:800],
-    'val':   subset[800:900],
-    'test':  subset[900:1000],
+    'train': subset[:2400],
+    'val':   subset[2400:2700],
+    'test':  subset[2700:3000],
 }
 
 # Copy files into clean structure
@@ -46,15 +46,15 @@ for split_name, files in splits.items():
 yaml_content = f"""path: {output_dir}
 train: images/train
 val: images/val
-test: images/test   
+test: images/test
 nc: 6
 names:
-0: Deformation
-1: Obstacle
-2: Rupture 
-3: Disconnect
-4: Misalignment
-5: Deposition
+  - Deformation
+  - Obstacle
+  - Rupture
+  - Disconnect
+  - Misalignment
+  - Deposition
 """
 
 with open(os.path.join(output_dir, 'data.yaml'), 'w') as f:

@@ -12,7 +12,7 @@ model.train(
       imgsz=640,
       batch=16,
       device='mps', #specifically for Mac Mini M4 chip, force trainign to GPU 
-      name="pipeline_defect_50ep"
+      name="pipeline_defect_3k_50ep"
   )
 
 elapsed = time.time() - start
