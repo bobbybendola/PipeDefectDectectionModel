@@ -1,9 +1,9 @@
 # Pipeline Defect Detection Model
 
-Inspired from Aditi Varia, Shrujan Sriram, Abhinav Gondesi's work on PipeDown - a tool that can be used to constantly monitor the inside of pipes for industrial pipe inspections.
-Created during UC Berkeley AI Hackathon 2026.
-DevPost: https://devpost.com/software/tbd-nprbw3
-GitHub: https://github.com/aditivv/berkai
+Inspired from Aditi Varia, Shrujan Sriram, Abhinav Gondesi's work on PipeDown - a tool that can be used to constantly monitor the inside of pipes for industrial pipe inspections. 
+Created during UC Berkeley AI Hackathon 2026. 
+DevPost: https://devpost.com/software/tbd-nprbw3 
+GitHub: https://github.com/aditivv/berkai 
 
 
 A YOLOv8n object detection model trained to identify structural defects in
@@ -253,6 +253,6 @@ results[0].show()
 ---
 Next Steps
 
-- Train on a larger subset (5,000–6,000 images) to push mAP50 past 0.70
-- Lower confidence threshold to 0.10 to improve recall for real-world inspection use
-- Evaluate per-class performance on the 300-image test set
+- Train on a larger subset (3,000–5,000 images) to push mAP50 past 0.65
+- Evaluate per-class performance on the 100-image test set
+---
