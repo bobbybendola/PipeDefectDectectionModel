@@ -1,27 +1,27 @@
 # Pipeline Defect Detection Model
 
-Inspired from Aditi Varia, Shrujan Sriram, Abhinav Gondesi's work on PipeDown - a tool that can be used to constantly monitor the inside of pipes for industrial pipe inspections. 
-Created during UC Berkeley AI Hackathon 2026. 
-DevPost: https://devpost.com/software/tbd-nprbw3 
-GitHub: https://github.com/aditivv/berkai 
+Inspired from Aditi Varia, Shrujan Sriram, Abhinav Gondesi's work on PipeDown - a tool that can be used to constantly monitor the inside of pipes for industrial pipe inspections.
+Created during UC Berkeley AI Hackathon 2026.
+DevPost: https://devpost.com/software/tbd-nprbw3
+GitHub: https://github.com/aditivv/berkai
 
 
 A YOLOv8n object detection model trained to identify structural defects in
 pipeline inspection footage. Built, trained, and run entirely locally on an
-Apple M4 Mac mini using GPU acceleration. 
+Apple M4 Mac mini using GPU acceleration.
 
-Trained using publically avaible Kaggle data set, with images collected from Robots driven through industrial pipes underground. 
-Mir Md Musleh Uddin Shaeek. (2024). Pipeline Defect Dataset [Dataset]. Kaggle. https://doi.org/10.34740/KAGGLE/DS/5294466 
-https://www.kaggle.com/datasets/simplexitypipeline/pipeline-defect-dataset/data 
+Trained using publically avaible Kaggle data set, with images collected from Robots driven through industrial pipes underground.
+Mir Md Musleh Uddin Shaeek. (2024). Pipeline Defect Dataset [Dataset]. Kaggle. https://doi.org/10.34740/KAGGLE/DS/5294466
+https://www.kaggle.com/datasets/simplexitypipeline/pipeline-defect-dataset/data
 
 
 ---
 
 ## Demo — Single Epoch Training on Apple M4
 
-[![YOLOv8n Training on Apple M4]: https://youtu.be/AaJa3gm1w9M 
+[![YOLOv8n Training on Apple M4](https://img.youtube.com/vi/AaJa3gm1w9M/0.jpg)](https://www.youtube.com/watch?v=AaJa3gm1w9M)
 
-*Single epoch training run on Apple M4 Mac mini — ~66 seconds using MPS
+*Single epoch training run on Apple M4 Mac mini — ~66 seconds using MPS*
 
 ---
 
@@ -76,8 +76,8 @@ why the M4 Mac mini performs well for local ML training despite having no
 dedicated GPU.
 
 I manually adjsted the Ultralytics model to be have it backpropgation and training phase tensor calclation to happen on the GPU side of compute
-instead of the CPU, since Apple's MPS backend allows us to utlize the benefit of parralelize the matrix compute, instead of having these operations 
-be done without parralization on the CPU itself. 
+instead of the CPU, since Apple's MPS backend allows us to utlize the benefit of parralelize the matrix compute, instead of having these operations
+be done without parralization on the CPU itself.
 
 ---
 
@@ -99,7 +99,7 @@ model.train(
     epochs=50,
     imgsz=640,
     batch=16,
-    device='mps',   #helps push compute for the model to the GPU. 
+    device='mps',   #helps push compute for the model to the GPU.
     name="pipeline_defect_50ep"
 )
 
@@ -144,7 +144,7 @@ Single Epoch Baseline
 High precision but near-zero recall after 1 epoch is expected — the model had
 only seen each image once and was being extremely conservative.
 
-50 Epoch Full Run
+1,000 Image Run — 50 Epochs
 
 Total training time: 34.8 minutes on Apple M4
 
@@ -162,31 +162,63 @@ Total training time: 34.8 minutes on Apple M4
 │ train/box_loss │ 1.656   │ 1.571    │ 1.299    │ 0.876    │
 └────────────────┴─────────┴──────────┴──────────┴──────────┘
 
-Accuracy Summary
+3,000 Image Run — 50 Epochs
+
+Total training time: 3.16 hours on Apple M4
+
+┌────────────────┬─────────┬──────────┬──────────┬──────────┐
+│     Metric     │ Epoch 1 │ Epoch 10 │ Epoch 25 │ Epoch 50 │
+├────────────────┼─────────┼──────────┼──────────┼──────────┤
+│ mAP50          │ 0.247   │ 0.466    │ 0.532    │ 0.632    │
+├────────────────┼─────────┼──────────┼──────────┼──────────┤
+│ Recall         │ 0.342   │ 0.466    │ 0.530    │ 0.597    │
+├────────────────┼─────────┼──────────┼──────────┼──────────┤
+│ Precision      │ 0.224   │ 0.471    │ 0.536    │ 0.652    │
+├────────────────┼─────────┼──────────┼──────────┼──────────┤
+│ train/cls_loss │ 3.329   │ 2.125    │ 1.696    │ 0.897    │
+├────────────────┼─────────┼──────────┼──────────┼──────────┤
+│ train/box_loss │ 1.630   │ 1.525    │ 1.316    │ 0.974    │
+└────────────────┴─────────┴──────────┴──────────┴──────────┘
+
+Accuracy Summary — 3,000 Image Model
 
 ┌───────────┬─────────────┬────────────────────────────────────────────────────────────┐
 │  Metric   │ Final Value │                       Plain English                        │
 ├───────────┼─────────────┼────────────────────────────────────────────────────────────┤
-│ mAP50     │ 48.2%       │ Finds and correctly identifies defects about half the time │
+│ mAP50     │ 63.2%       │ Finds and correctly identifies defects 63% of the time     │
 ├───────────┼─────────────┼────────────────────────────────────────────────────────────┤
-│ mAP50-95  │ 26.6%       │ Stricter score with tighter bounding box requirements      │
+│ mAP50-95  │ 35.9%       │ Stricter score with tighter bounding box requirements      │
 ├───────────┼─────────────┼────────────────────────────────────────────────────────────┤
-│ Precision │ 55.2%       │ When it flags a defect, it's correct 55% of the time       │
+│ Precision │ 65.2%       │ When it flags a defect, it's correct 65% of the time       │
 ├───────────┼─────────────┼────────────────────────────────────────────────────────────┤
-│ Recall    │ 45.4%       │ Of all actual defects present, it finds 45% of them        │
+│ Recall    │ 59.7%       │ Of all actual defects present, it finds 60% of them        │
 └───────────┴─────────────┴────────────────────────────────────────────────────────────┘
+
+Improvement — 1,000 vs 3,000 Images
+
+┌───────────┬──────────────┬──────────────┬─────────────┐
+│  Metric   │ 1,000 images │ 3,000 images │ Improvement │
+├───────────┼──────────────┼──────────────┼─────────────┤
+│ mAP50     │ 48.2%        │ 63.2%        │ +31%        │
+├───────────┼──────────────┼──────────────┼─────────────┤
+│ Recall    │ 45.4%        │ 59.7%        │ +31%        │
+├───────────┼──────────────┼──────────────┼─────────────┤
+│ Precision │ 55.2%        │ 65.2%        │ +18%        │
+├───────────┼──────────────┼──────────────┼─────────────┤
+│ mAP50-95  │ 26.6%        │ 35.9%        │ +35%        │
+└───────────┴──────────────┴──────────────┴─────────────┘
 
 Against industry benchmarks:
 - < 50% mAP50 — Experimental / proof of concept
-- 50–70% mAP50 — Usable for assisted inspection ← approaching this range
-- > 70% mAP50 — Production grade
+- 50–70% mAP50 — Usable for assisted inspection ← 3,000 image model is here
+▎ 70% mAP50 — Production grade
 
 Saved Model Weights
 
 Ultralytics automatically saves two checkpoints:
 
-runs/detect/pipeline_defect_50ep/weights/best.pt   ← best mAP50 across all epochs
-runs/detect/pipeline_defect_50ep/weights/last.pt   ← final epoch state
+runs/detect/pipeline_defect_3k_50ep/weights/best.pt   ← best mAP50 across all epochs
+runs/detect/pipeline_defect_3k_50ep/weights/last.pt   ← final epoch state
 
 ---
 Setup & Usage
@@ -205,7 +237,7 @@ Download the dataset from Kaggle and place the zip in ~/Downloads, then:
 
 python3 prepare_data.py
 
-This samples 1,000 images from the full dataset and creates the train/val/test split.
+This samples images from the full dataset and creates the train/val/test split.
 
 3. Train
 
@@ -214,13 +246,13 @@ python3 train.py
 4. Run inference with the saved model
 
 from ultralytics import YOLO
-model = YOLO("runs/detect/pipeline_defect_50ep/weights/best.pt")
+model = YOLO("runs/detect/pipeline_defect_3k_50ep/weights/best.pt")
 results = model("path/to/your/image.jpg")
 results[0].show()
 
 ---
 Next Steps
 
-- Train on a larger subset (3,000–5,000 images) to push mAP50 past 0.65
-- Evaluate per-class performance on the 100-image test set
----
+- Train on a larger subset (5,000–6,000 images) to push mAP50 past 0.70
+- Lower confidence threshold to 0.10 to improve recall for real-world inspection use
+- Evaluate per-class performance on the 300-image test set
